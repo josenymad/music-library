@@ -4,12 +4,18 @@
   "description": "How to design and implement an API which can perform CRUD operations on a database.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "node scripts/create-database.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon -r dotenv/config index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dotenv": "^16.0.3",
     "eslint": "^8.39.0"
+  },
+  "dependencies": {
+    "pg": "^8.10.0"
   }
 }
