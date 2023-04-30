@@ -4,7 +4,7 @@ How to design and implement an API which can perform CRUD operations on a databa
 
 ## Concepts
 
-* Database Design
-* SQL
-* Postgres
-* CRUD Operations
+- Database Design
+- SQL
+- Postgres
+- CRUD Operations
