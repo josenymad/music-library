@@ -5,15 +5,20 @@
   "main": "index.js",
   "scripts": {
     "prestart": "node scripts/create-database.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -r dotenv/config index.js"
+    "test": "mocha tests/**/*.js --exit --recursive --timeout 60000 --file ./tests/test-setup.js",
+    "start": "nodemon -r dotenv/config index.js",
+    "pretest": "node scripts/create-database.js test",
+    "posttest": "node scripts/drop-database.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "chai": "^4.3.7",
     "dotenv": "^16.0.3",
-    "eslint": "^8.39.0"
+    "eslint": "^8.39.0",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   },
   "dependencies": {
     "pg": "^8.10.0"
