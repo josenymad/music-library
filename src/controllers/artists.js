@@ -1,6 +1,6 @@
 const db = require('../db/index');
 
-exports.artistController = async (req, res) => {
+exports.addArtist = async (req, res) => {
   const { name, genre } = req.body;
 
   try {
@@ -11,6 +11,15 @@ exports.artistController = async (req, res) => {
       [name, genre]
     );
     res.status(201).json(artist);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+exports.readArtist = async (_, res) => {
+  try {
+    const { rows } = await db.query(`SELECT * FROM Artists`);
+    res.status(200).json(rows);
   } catch (err) {
     res.status(500).json(err.message);
   }
