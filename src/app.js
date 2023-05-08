@@ -5,3 +5,5 @@ const app = express();
 app.use('/artists', artistRouter);
 
 module.exports = app;
+
+console.log('src/app');

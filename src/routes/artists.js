@@ -6,3 +6,5 @@ const artistRouter = express.Router();
 artistRouter.route('/').post(artistController);
 
 module.exports = artistRouter;
+
+console.log('src/routes/artists');
