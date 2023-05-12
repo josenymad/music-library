@@ -41,7 +41,7 @@ exports.readSingleArtist = async (req, res) => {
   }
 };
 
-exports.updateArtist = async (req, res) => {
+exports.replaceArtist = async (req, res) => {
   const { name, genre } = req.body;
   const artistid = req.params.id;
   try {
@@ -51,6 +51,35 @@ exports.updateArtist = async (req, res) => {
       `UPDATE Artists SET name = $1, genre = $2 WHERE id = $3 RETURNING *`,
       [name, genre, artistid]
     );
+    if (artist) {
+      res.status(200).json(artist);
+    } else {
+      res.status(404).json({ message: `artist ${artistid} does not exist` });
+    }
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+exports.updateArtist = async (req, res) => {
+  const { name, genre } = req.body;
+  const artistid = req.params.id;
+
+  let query, params;
+
+  if (name && genre) {
+    query = `UPDATE Artists SET name = $1, genre = $2 WHERE id = $3 RETURNING *`;
+    params = [name, genre, artistid];
+  } else if (!genre) {
+    query = `UPDATE Artists SET name = $1 WHERE id = $2 RETURNING *`;
+    params = [name, artistid];
+  } else if (!name) {
+    query = `UPDATE Artists SET genre = $1 WHERE id = $2 RETURNING *`;
+    params = [genre, artistid];
+  }
+
+  try {
+    const { rows: [artist] } = await db.query(query, params);
     if (artist) {
       res.status(200).json(artist);
     } else {
