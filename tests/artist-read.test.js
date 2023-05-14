@@ -8,15 +8,15 @@ describe('Read Artists', () => {
   beforeEach(async () => {
     const responses = await Promise.all([
       db.query(
-        'INSERT INTO Artists (name, genre) VALUES( $1, $2) RETURNING *',
+        'INSERT INTO Artists (name, genre) VALUES ($1, $2) RETURNING *',
         ['Tame Impala', 'rock']
       ),
       db.query(
-        'INSERT INTO Artists (name, genre) VALUES( $1, $2) RETURNING *',
+        'INSERT INTO Artists (name, genre) VALUES ($1, $2) RETURNING *',
         ['Kylie Minogue', 'pop']
       ),
       db.query(
-        'INSERT INTO Artists (name, genre) VALUES( $1, $2) RETURNING *',
+        'INSERT INTO Artists (name, genre) VALUES ($1, $2) RETURNING *',
         ['Tame Antelope', 'jazz']
       ),
     ]);
