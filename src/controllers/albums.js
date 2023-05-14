@@ -78,3 +78,23 @@ exports.updateAlbum = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
+
+exports.deleteAlbum = async (req, res) => {
+  const albumid = req.params.id;
+
+  try {
+    const {
+      rows: [album],
+    } = await db.query('DELETE FROM Albums WHERE id = $1 RETURNING *', [
+      albumid,
+    ]);
+
+    if (album) {
+      res.status(200).json(album);
+    } else {
+      res.status(404).json({ message: `album ${albumid} does not exist` });
+    }
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
