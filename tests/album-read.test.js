@@ -6,23 +6,18 @@ const app = require('../src/app');
 describe('Read Albums', () => {
   let albums;
   beforeEach(async () => {
-    await db.query(
-      'INSERT INTO Artists (name, genre) VALUES ($1, $2) RETURNING *',
-      ['Bonobo', 'electronic']
-    );
-
     const responses = await Promise.all([
       db.query('INSERT INTO Albums (name, year) VALUES ($1, $2) RETURNING *', [
         'Days To Come',
-        '2006',
+        2006,
       ]),
       db.query('INSERT INTO Albums (name, year) VALUES ($1, $2) RETURNING *', [
         'Black Sands',
-        '2010',
+        2010,
       ]),
       db.query('INSERT INTO Albums (name, year) VALUES ($1, $2) RETURNING *', [
         'Fragments',
-        '2022',
+        2022,
       ]),
     ]);
 
@@ -41,6 +36,26 @@ describe('Read Albums', () => {
 
         expect(albumRecord).to.deep.equal(expected);
       });
+    });
+  });
+
+  describe('GET /albums/{id}', () => {
+    it('returns the album with the correct id', async () => {
+      const { status, body } = await request(app)
+        .get(`/albums/${albums[0].id}`)
+        .send();
+
+      expect(status).to.equal(200);
+      expect(body).to.deep.equal(albums[0]);
+    });
+
+    it('returns a 404 if the album does not exist', async () => {
+      const { status, body } = await request(app)
+        .get('/albums/999999999')
+        .send();
+
+      expect(status).to.equal(404);
+      expect(body.message).to.equal('album 999999999 does not exist');
     });
   });
 });

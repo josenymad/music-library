@@ -27,10 +27,11 @@ exports.readArtists = async (_, res) => {
 
 exports.readSingleArtist = async (req, res) => {
   const artistid = req.params.id;
+
   try {
     const {
       rows: [artist],
-    } = await db.query(`SELECT * FROM Artists WHERE id = ${artistid}`);
+    } = await db.query(`SELECT * FROM Artists WHERE id = $1`, [artistid]);
     if (artist) {
       res.status(200).json(artist);
     } else {
@@ -44,6 +45,7 @@ exports.readSingleArtist = async (req, res) => {
 exports.replaceArtist = async (req, res) => {
   const { name, genre } = req.body;
   const artistid = req.params.id;
+
   try {
     const {
       rows: [artist],
@@ -64,7 +66,6 @@ exports.replaceArtist = async (req, res) => {
 exports.updateArtist = async (req, res) => {
   const { name, genre } = req.body;
   const artistid = req.params.id;
-
   let query, params;
 
   if (name && genre) {
