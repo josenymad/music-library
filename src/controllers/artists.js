@@ -111,3 +111,20 @@ exports.deleteArtist = async (req, res) => {
     res.status(500).json(err.message);
   }
 };
+
+exports.addAlbum = async (req, res) => {
+  const { name, year } = req.body;
+  const artistid = req.params.id;
+
+  try {
+    const {
+      rows: [album],
+    } = await db.query(
+      'INSERT INTO Albums (name, year, artistId) VALUES ($1, $2, $3) RETURNING *',
+      [name, year, artistid]
+    );
+    res.status(201).json(album);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};

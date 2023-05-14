@@ -7,7 +7,7 @@ describe('Update Artist', () => {
   let artist;
   beforeEach(async () => {
     const { rows } = await db.query(
-      'INSERT INTO Artists (name, genre) VALUES( $1, $2) RETURNING *',
+      'INSERT INTO Artists (name, genre) VALUES ($1, $2) RETURNING *',
       ['Tame Impala', 'rock']
     );
 

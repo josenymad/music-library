@@ -6,6 +6,7 @@ const {
   replaceArtist,
   updateArtist,
   deleteArtist,
+  addAlbum,
 } = require('../controllers/artists');
 
 const artistRouter = express.Router();
@@ -18,5 +19,7 @@ artistRouter
   .put(replaceArtist)
   .patch(updateArtist)
   .delete(deleteArtist);
+
+artistRouter.route('/:id/albums').post(addAlbum);
 
 module.exports = artistRouter;
