@@ -94,19 +94,19 @@ exports.updateArtist = async (req, res) => {
 };
 
 exports.deleteArtist = async (req, res) => {
-  const artistid = req.params.id;
+  const artistId = req.params.id;
 
   try {
     const {
       rows: [artist],
     } = await db.query(`DELETE FROM Artists WHERE id = $1 RETURNING *`, [
-      artistid,
+      artistId,
     ]);
 
     if (artist) {
       res.status(200).json(artist);
     } else {
-      res.status(404).json({ message: `artist ${artistid} does not exist` });
+      res.status(404).json({ message: `artist ${artistId} does not exist` });
     }
   } catch (err) {
     res.status(500).json(err.message);
@@ -115,14 +115,14 @@ exports.deleteArtist = async (req, res) => {
 
 exports.addAlbum = async (req, res) => {
   const { name, year } = req.body;
-  const artistid = req.params.id;
+  const artistId = req.params.id;
 
   try {
     const {
       rows: [album],
     } = await db.query(
       'INSERT INTO Albums (name, year, artistId) VALUES ($1, $2, $3) RETURNING *',
-      [name, year, artistid]
+      [name, year, artistId]
     );
     res.status(201).json(album);
   } catch (err) {

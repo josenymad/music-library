@@ -10,17 +10,17 @@ exports.readAlbums = async (_, res) => {
 };
 
 exports.readSingleAlbum = async (req, res) => {
-  const albumid = req.params.id;
+  const albumId = req.params.id;
 
   try {
     const {
       rows: [album],
-    } = await db.query(`SELECT * FROM Albums WHERE id = $1`, [albumid]);
+    } = await db.query(`SELECT * FROM Albums WHERE id = $1`, [albumId]);
 
     if (album) {
       res.status(200).json(album);
     } else {
-      res.status(404).json({ message: `album ${albumid} does not exist` });
+      res.status(404).json({ message: `album ${albumId} does not exist` });
     }
   } catch (err) {
     res.status(500).json(err.message);
@@ -29,20 +29,20 @@ exports.readSingleAlbum = async (req, res) => {
 
 exports.replaceAlbum = async (req, res) => {
   const { name, year } = req.body;
-  const albumid = req.params.id;
+  const albumId = req.params.id;
 
   try {
     const {
       rows: [album],
     } = await db.query(
       'UPDATE Albums SET name = $1, year = $2 WHERE id = $3 RETURNING *',
-      [name, year, albumid]
+      [name, year, albumId]
     );
 
     if (album) {
       res.status(200).json(album);
     } else {
-      res.status(404).json({ message: `album ${albumid} does not exist` });
+      res.status(404).json({ message: `album ${albumId} does not exist` });
     }
   } catch (err) {
     res.status(500).json(err.message);
@@ -51,18 +51,18 @@ exports.replaceAlbum = async (req, res) => {
 
 exports.updateAlbum = async (req, res) => {
   const { name, year } = req.body;
-  const albumid = req.params.id;
+  const albumId = req.params.id;
   let query, params;
 
   if (name && year) {
     query = `UPDATE Albums SET name = $1, year = $2 WHERE id = $3 RETURNING *`;
-    params = [name, year, albumid];
+    params = [name, year, albumId];
   } else if (!year) {
     query = `UPDATE Albums SET name = $1 WHERE id = $2 RETURNING *`;
-    params = [name, albumid];
+    params = [name, albumId];
   } else if (!name) {
-    query = `UPDATE Albums SET year = $1 WHERE id = 2 RETURNING *`;
-    params = [year, albumid];
+    query = `UPDATE Albums SET year = $1 WHERE id = $2 RETURNING *`;
+    params = [year, albumId];
   }
 
   try {
@@ -72,7 +72,7 @@ exports.updateAlbum = async (req, res) => {
     if (album) {
       res.status(200).json(album);
     } else {
-      res.status(404).json({ message: `album ${albumid} does not exist` });
+      res.status(404).json({ message: `album ${albumId} does not exist` });
     }
   } catch (err) {
     res.status(500).json(err.message);
@@ -80,19 +80,19 @@ exports.updateAlbum = async (req, res) => {
 };
 
 exports.deleteAlbum = async (req, res) => {
-  const albumid = req.params.id;
+  const albumId = req.params.id;
 
   try {
     const {
       rows: [album],
     } = await db.query('DELETE FROM Albums WHERE id = $1 RETURNING *', [
-      albumid,
+      albumId,
     ]);
 
     if (album) {
       res.status(200).json(album);
     } else {
-      res.status(404).json({ message: `album ${albumid} does not exist` });
+      res.status(404).json({ message: `album ${albumId} does not exist` });
     }
   } catch (err) {
     res.status(500).json(err.message);

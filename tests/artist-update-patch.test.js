@@ -21,7 +21,6 @@ describe('Update Artist', () => {
         .send({ name: 'something different', genre: 'rock' });
 
       expect(status).to.equal(200);
-
       expect(body).to.deep.equal({
         id: artist.id,
         name: 'something different',
